@@ -28,7 +28,7 @@ def snail(snail_map: list) -> list:
     """
 
     #check for empty list edge case
-    if not snail_map:
+    if snail_map == [[]]:
          return []
 
     #set max dimensions of matrix based on length of the passed arrays
