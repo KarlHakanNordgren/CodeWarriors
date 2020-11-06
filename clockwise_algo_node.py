@@ -1,8 +1,9 @@
 class Node:
-   def __init__(self, position: list, next = None):
+   def __init__(self, position: list, next = None, isVisited = False):
        self.row_location = position[0]
        self.col_location = position[1]
        self.next = next
+       self.isVisited = isVisited
 
 
 
@@ -25,48 +26,65 @@ def snail(snail_map: list) -> list:
 
     
     """
+    MATRIX_ROW_MAX, MATRIX_COL_MAX = len(snail_map) - 1, len(snail_map) - 1
 
-    def check_location_validity(position: list) -> bool:
-        if position[0] <= MATRIX_ROW_MAX and position[0] >= 0 and position[1] <= MATRIX_COL_MAX and position[1] >= 0:
-            return True
+    # change position values depending on direction
+    def move_position(direction: int, positions: list) -> list:
+        new_positions = []
+        if i == 0: # move right..increment col
+            new_positions = [positions[0], positions[1] + 1]
+        elif i == 1: # move down..increment row
+            new_positions = [positions[0] + 1, positions[1]]
+        elif i == 2: # move left decrement col
+            new_positions = [positions[0], positions[1] - 1]
+        elif i == 3: # move up decerement row
+            new_positions = [positions[0] - 1, positions[1]]
+        return new_positions # returns a new list so passed list is unchanged
+
+    def check_valid_move(positions: list, MATRIX_ROW_MAX: int, MATRIX_COL_MAX: int) -> bool:
+     # check if in bounds and return True along with update row and col
+        if positions[0] >= 0 and positions[0] <= MATRIX_ROW_MAX:
+            if positions[1] >= 0 and positions[1] <= MATRIX_COL_MAX:
+                return True
         return False
 
+    # check if there is a node present in position arg
     def check_node_present(visited_nodes: list, position: list) -> bool:
         for node in visited_nodes:
             if node.row_location == position[0] and node.col_location == position[1]:
                 return True
         return False 
 
-    # returns new set of node positions
-    def update_directions(current_row: int, current_col: int) -> list:
-        return [[current_row, current_col + 1], [current_row + 1, current_col],
-            [current_row, current_col - 1], [current_row - 1, current_col]]
 
     visited_nodes = []
-    MATRIX_ROW_MAX, MATRIX_COL_MAX = len(snail_map) - 1, len(snail_map) - 1
-
     # init first node
-    current_row = 0
-    current_col = 0
-    current_node = Node([current_row, current_col])
+    current_positions = [0,0]
+    current_node = Node(current_positions, isVisited= True)
     visited_nodes.append(current_node)
 
-    #list of directions, Right - Down - Left - Up
-    node_directions = [[current_row, current_col + 1], [current_row + 1, current_col],
-            [current_row, current_col - 1], [current_row - 1, current_col]
-        ]
-
+    i =0
+    #while there are still nodes to visit
     while len(visited_nodes) < len(snail_map)*len(snail_map):
-        
-        #iterate over directions to check validity
-        for direction in node_directions:
-            if check_location_validity(direction):
-                #check if a node exists and create if it doesn't
-                if not check_node_present(visited_nodes, direction):
-                    current_node = Node(direction)
-                    visited_nodes.append(current_node)
-                    node_directions = update_directions(current_node.row_location, current_node.col_location)
-                    break
+        # reset direction after trying all directions
+        if i > 3:
+            i = 0
+        #update next position for node
+        next_positions = move_position(i, current_positions)
+        # check if next positions are valid and in bounds
+        if check_valid_move(next_positions, MATRIX_ROW_MAX, MATRIX_COL_MAX):
+            #check if a node is not present in the next position
+            if not (check_node_present(visited_nodes, next_positions)):
+                # Create a new node at that position, store it in visited and reset current positions to next
+                current_node = Node(next_positions, isVisited= True)
+                visited_nodes.append(current_node)
+                current_positions = next_positions
+            else: #if node present, try a different direction
+                i += 1
+        else: # if not a valid move, reset next to current and change direction
+            next_positions = current_positions
+            i += 1
+
+
     
     final_array = []
     for node in visited_nodes:
@@ -78,8 +96,17 @@ def snail(snail_map: list) -> list:
 
 # tests
 
-array = [[1,2,3],
+array3 = [[1,2,3],
          [4,5,6],
          [7,8,9]]
-expected = [1,2,3,6,9,8,7,4,5]
-print (snail(array))
+expected3 = [1,2,3,6,9,8,7,4,5]
+
+array4 = [[1,2,4,5],
+         [3,100,7,8],
+         [7,8,9,12],
+         [12,15,103,2]]
+expected4 = [1,2,4,5,8,12,2,103,15,12,7,3,100,7,9,8]
+print('True' if expected3 == snail(array3) else 'False')
+print (snail(array3))
+print('True' if expected4 == snail(array4) else 'False')
+print (snail(array4))
