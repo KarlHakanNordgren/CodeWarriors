@@ -26,6 +26,12 @@ def snail(snail_map: list) -> list:
 
     
     """
+
+    #check for empty list edge case
+    if not snail_map:
+         return []
+
+    #set max dimensions of matrix based on length of the passed arrays
     MATRIX_ROW_MAX, MATRIX_COL_MAX = len(snail_map) - 1, len(snail_map) - 1
 
     # change position values depending on direction
