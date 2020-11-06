@@ -76,6 +76,8 @@ def snail(snail_map: list) -> list:
 
     
 
+# tests
+
 array = [[1,2,3],
          [4,5,6],
          [7,8,9]]
