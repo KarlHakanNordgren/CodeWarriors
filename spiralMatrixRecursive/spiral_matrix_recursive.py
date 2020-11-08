@@ -29,7 +29,7 @@ def snail_recursive(snail_map: list, array: list) -> list:
 
 
     
-
+# tests
 array1 = [2]
 arrayTest = [[5]]
 array2 = [[9,1],
@@ -56,28 +56,3 @@ print(snail(array1))
 print(snail(array2))
 print(snail(array4))
 print(snail(array5))
-
-
-
-
-
-# tests
-"""
-array3 = [[1,2,3],
-         [4,5,6],
-         [7,8,9]]
-expected3 = [1,2,3,6,9,8,7,4,5]
-
-print('True' if expected3 == snail(array3) else 'False')
-print (snail(array3))
-
-array4 = [[1,2,4,5],
-         [3,100,7,8],
-         [7,8,9,12],
-         [12,15,103,2]]
-expected4 = [1,2,4,5,8,12,2,103,15,12,7,3,100,7,9,8]
-
-print('True' if expected4 == snail(array4) else 'False')
-print (snail(array4))
-"""
-
