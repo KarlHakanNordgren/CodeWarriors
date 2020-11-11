@@ -1,3 +1,10 @@
+# comments
+# 1. this is very good!
+# 2. i reckon the stuff after the else statement below can be tidied up using list comprehension:
+# https://stackoverflow.com/questions/44360162/how-to-access-a-column-in-a-list-of-lists-in-python
+# 3. your tests below could be written using unit tests: https://realpython.com/python-testing/
+# tests (and so-called test driven development) are very important in the real world.
+
 def snail(snail_map: list) -> list:
     if snail_map == [[]]: return []
     if len(snail_map) == 1: return snail_map.pop()
@@ -56,3 +63,4 @@ print(snail(array1))
 print(snail(array2))
 print(snail(array4))
 print(snail(array5))
+
